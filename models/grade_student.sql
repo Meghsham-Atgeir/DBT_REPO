@@ -1,29 +1,15 @@
 {{
   config(
     materialized='view'
-    -- materialized='table'
+    
   )
 }}
 
-with student_data_raw as (
-    select * from {{ ref('stg_student') }}
+with student_data as (
+    select * from {{ ref('refine_student_data') }}
 ),
-student_data as (
-    select 
-    Studentid,
-    First_Name,
-    Last_Name,
-    Birth_Date,
-    Height_in_CM/100 as Height_in_Meter,
-    Weight_in_Pounds * 0.45360 as Weight_in_Kg,
-    Maths_Marks ,
-    Science_Marks ,
-    Marathi_Marks ,
-    English_Marks ,
-    Hindi_Marks  
-    from student_data_raw  
-),
-student_transform as (
+
+student_grades as (
     select
         Studentid as Roll_No,
         First_Name,
@@ -43,13 +29,5 @@ student_transform as (
         end as Grade
     from student_data
 )
--- student_ranks as (
---     select * 
---     from student_transform 
---     order by Percentage desc
---     limit 3
--- )
 
-
-
-select * from student_transform
+select * from student_grades
