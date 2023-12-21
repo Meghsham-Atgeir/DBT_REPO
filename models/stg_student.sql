@@ -1,3 +1,3 @@
 select
     *
-from {{ source('student_sources_file', 'studentmarks') }}
+from {{ source('schema', 'studentmarks') }}
